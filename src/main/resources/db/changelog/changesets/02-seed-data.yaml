@@ -1,0 +1,166 @@
+databaseChangeLog:
+  - changeSet:
+      id: seed-test-users
+      author: Bolot Azatov
+      changes:
+        - sql:
+            comment: Добавление тестового пользователя (пароль password123)
+            sql: |
+              INSERT INTO users (email, password, full_name, role, created_at)
+              VALUES ('user@edufood.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Тестовый Пользователь', 'USER', CURRENT_TIMESTAMP);
+
+  - changeSet:
+      id: seed-restaurants
+      author: Bolot Azatov
+      changes:
+        - sql:
+            comment: Добавление 10 заведений без указания явных ID
+            sql: |
+              INSERT INTO restaurants (name, description, address, image_url) VALUES
+              ('Додо Пицца', 'Сеть пиццерий №1 с быстрой доставкой горячей пиццы и закусок.', 'ул. Киевская, 107', 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600'),
+              ('Бублик', 'Уютная городская кофейня со свежей выпечкой, завтраками и десертами.', 'бул. Эркиндик, 35', 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600'),
+              ('Чайхана Navat', 'Восточное гостеприимство, традиционный плов, лагман и шашлыки.', 'ул. Ибраимова, 42', 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600'),
+              ('Burger House', 'Сочные крафтовые бургеры из 100% мраморной говядины на гриле.', 'пр. Чуй, 155', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=600'),
+              ('Sushi Room', 'Премиальные роллы, сашими, суши и сеты из свежей рыбы.', 'ул. Токтогула, 125', 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600'),
+              ('Фаиза', 'Легендарное кафе национальной и уйгурской кухни.', 'ул. Жибек Жолу, 340', 'https://images.unsplash.com/photo-1544025162-d76694265947?w=600'),
+              ('KFC', 'Знаменитая хрустящая курочка в секретной панировке из 11 трав и специй.', 'ул. Байтик Баатыра, 17', 'https://images.unsplash.com/photo-1513639776629-7b61b0ac49cb?w=600'),
+              ('Coffee Boom', 'Европейская и авторская кухня, стейки, паста и фирменные напитки.', 'ул. Боконбаева, 113', 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600'),
+              ('Wok & Roll', 'Паназиатская кухня: сытная лапша Wok, том-ям, поке и тяхан.', 'пр. Манаса, 40', 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600'),
+              ('Трактир На Мельнице', 'Традиционная славянская кухня: борщ, вареники, домашнее жаркое.', 'ул. Московская, 86', 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600');
+
+  - changeSet:
+      id: seed-dishes
+      author: Bolot Azatov
+      changes:
+        - sql:
+            comment: Добавление 100 блюд через подзапросы к таблице restaurants
+            sql: |
+              -- Додо Пицца (1-10)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Пицца Пепперони', 'Пикантная пепперони, моцарелла, фирменный томатный соус', 495.00, 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Пицца Маргарита', 'Увеличенная порция моцареллы, томаты, соус песто и орегано', 395.00, 'https://images.unsplash.com/photo-1604382355076-af4b0eb60143?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Пицца Четыре сыра', 'Сыр блю чиз, смесь сыров чеддер и пармезан, моцарелла', 545.00, 'https://images.unsplash.com/photo-1573821663912-569905455b1c?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Пицца Мясная', 'Цыпленок, ветчина, пикантная пепперони, чоризо и моцарелла', 595.00, 'https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Додстер Классический', 'Горячая закуска с цыпленком, томатами, моцареллой и соусом ранч', 195.00, 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Сырные палочки', 'Хрустящие сырные палочки из нежного теста с чесночным соусом', 245.00, 'https://images.unsplash.com/photo-1548340748-6d2b7d7da410?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Куриные кусочки запеченные', 'Нежные кусочки куриного филе в хрустящей панировке', 265.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Паста Цыпленок и грибы', 'Паста фетучини с запеченным филе, шампиньонами и сливочным соусом', 345.00, 'https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Маффин Три шоколада', 'Шоколадный кекс с начинкой из темного, молочного и белого шоколада', 145.00, 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Морс Клюквенный 0.5л', 'Натуральный домашний морс из дикорастущей клюквы', 120.00, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца'));
+
+              -- Бублик (11-20)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Бейгл с лососем', 'Хрустящий бейгл со сливочным сыром, слабосоленой семгой и огурцом', 380.00, 'https://images.unsplash.com/photo-1588137378633-dea1336ce1e2?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Круассан классический', 'Французский сливочный слоеный круассан', 130.00, 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Сырники со сметаной', 'Нежные сырники из фермерского творога с ягодным джемом', 260.00, 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Авокадо тост', 'Тост из цельнозернового хлеба со свежим авокадо и яйцом пашот', 320.00, 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Сэндвич с индейкой', 'Чиабатта с запеченной индейкой, помидорами и соусом песто', 340.00, 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Чизкейк Сан-Себастьян', 'Баскский обожженный чизкейк с нежной кремовой текстурой', 290.00, 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Капучино 350мл', 'Классический кофейный напиток на основе эспрессо и взбитого молока', 180.00, 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Флэт Уайт', 'Двойной эспрессо с тонким слоем бархатистого молока', 200.00, 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Раф лавандовый', 'Кофе со сливками и натуральным лавандовым сиропом', 230.00, 'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик')),
+              ('Тарталетка с малиной', 'Песочная основа с заварным кремом и свежей малиной', 210.00, 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400', (SELECT id FROM restaurants WHERE name = 'Бублик'));
+
+              -- Чайхана Navat (21-30)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Плов праздничный', 'Рис лазер, нежная баранина, желтая морковь, изюм и перепелиные яйца', 390.00, 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Лагман Гуйру', 'Тянутая вручную лапша с обжаренной говядиной, пекинской капустой и сельдереем', 360.00, 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Манты с рубленым мясом (5 шт)', 'Тонкое тесто с начинкой из говядины, лука и курдючного жира', 340.00, 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Самса тандырная с говядиной', 'Хрустящая слоеная самса из глиняного тандыра', 120.00, 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Шашлык из баранины', 'Сочная мякоть ягненка, маринованная в восточных специях', 280.00, 'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Люля-кебаб из говядины', 'Рубленое мясо с луком и зеленью, запеченное на мангале', 260.00, 'https://images.unsplash.com/photo-1599488615731-7e5c2823ff28?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Шорпо по-восточному', 'Наваристый бульон с бараниной на кости и крупными овощами', 320.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Салат Ачичук', 'Тонко нарезанные сладкие помидоры, репчатый лук и острый перчик', 160.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Лепешка тандырная', 'Традиционный горячий хлеб с кунжутом', 40.00, 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat')),
+              ('Чай Ташкентский (чайник)', 'Черный и зеленый чай с лимоном, мятой и медом', 180.00, 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400', (SELECT id FROM restaurants WHERE name = 'Чайхана Navat'));
+
+              -- Burger House (31-40)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Чизбургер Классик', 'Котлета из говядины, сыр чеддер, маринованные огурцы, лук, кетчуп и горчица', 310.00, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Бургер BBQ Бекон', 'Котлета Black Angus, хрустящий бекон, луковые кольца и соус барбекю', 390.00, 'https://images.unsplash.com/photo-1553979459-d2229ba7433b?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Двойной монстр-бургер', 'Две сочные котлеты по 150г, двойной сыр, свежий салат и секретный соус', 490.00, 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Бургер с рваной свининой', 'Томленая свинина в соусе BBQ, салат коул слоу на бриоши', 370.00, 'https://images.unsplash.com/photo-1521305916504-4a1121188589?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Картофель фри с сырным соусом', 'Золотистые брусочки картофеля с морской солью', 150.00, 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Картофель по-деревенски', 'Запеченные дольки картофеля с паприкой и розмарином', 160.00, 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Наггетсы куриные (8 шт)', 'Куриное филе в хрустящей золотистой панировке', 220.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Луковые кольца', 'Кольца репчатого лука в пивном кляре', 180.00, 'https://images.unsplash.com/photo-1639024471285-0afc3855f488?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Милкшейк Клубничный', 'Густой молочный коктейль со свежей клубникой и мороженым', 210.00, 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Лимонад Цитрусовый 0.5л', 'Освежающий лимонад с апельсином, лимоном и мятой', 160.00, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House'));
+
+              -- Sushi Room (41-50)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Ролл Филадельфия Люкс', 'Свежий лосось, сливочный сыр, огурец и авокадо', 480.00, 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Ролл Калифорния с крабом', 'Снежный краб, авокадо, майонез, икра тобико', 390.00, 'https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Запеченный ролл с угрем', 'Угорь, сыр креметте, спайси соус, соус унаги и кунжут', 460.00, 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Темпура с креветкой', 'Горячий ролл с тигровой креветкой, сливочным сыром в хрустящем кляре', 420.00, 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Суши Сяке (Лосось)', 'Классические суши со свежим охлажденным лососем', 140.00, 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Гункан с чукой', 'Водоросли вакаме с ореховым соусом в нори', 110.00, 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Сет Сакура (32 шт)', 'Филадельфия, Калифорния, ролл с тунцом и темпура ролл', 1390.00, 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Суп Мисо классический', 'Традиционный соевый бульон с сыром тофу и водорослями', 190.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Салат Чука с ореховым соусом', 'Маринованные морские водоросли с кунжутом', 240.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room')),
+              ('Креветки темпура (5 шт)', 'Тигровые креветки в воздушном японском кляре', 380.00, 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=400', (SELECT id FROM restaurants WHERE name = 'Sushi Room'));
+
+              -- Фаиза (51-60)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Лагман Босо', 'Жареная лапша с говядиной, овощами, чесночными стрелками и яйцом', 350.00, 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Ганфан', 'Рассыпчатый белый рис с густой мясной и овощной подливой', 330.00, 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Чучвара по-домашнему', 'Миниатюрные домашние пельмени в ароматном мясном бульоне', 280.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Димляма с говядиной', 'Томленое мясо с картофелем, капустой и сладким перцем', 370.00, 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Манты с тыквой и мясом', 'Сочные манты со сладкой тыквой и рубленой говядиной', 310.00, 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Чебурек с мясом', 'Хрустящий чебурек с пузырчатым тестом и сочной начинкой', 110.00, 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Салат Свежесть', 'Огурцы, редис, зелень, заправленные домашней сметаной', 150.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Шакарап', 'Тончайшие слайсы помидоров с луком к горячим блюдам', 130.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Компот домашний из сухофруктов', 'Сварен из кураги, чернослива и яблок без добавления консервантов', 90.00, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза')),
+              ('Баурсаки (порция)', 'Пышные жареные кусочки дрожжевого теста', 100.00, 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=400', (SELECT id FROM restaurants WHERE name = 'Фаиза'));
+
+              -- KFC (61-70)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Баскет Дуэт', '4 крыла, 4 стрипса, 2 ножки и 2 порции малого картофеля фри', 590.00, 'https://images.unsplash.com/photo-1513639776629-7b61b0ac49cb?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Острые куриные крылышки (8 шт)', 'Легендарные крылышки в ультра-хрустящей острой панировке', 360.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Стрипсы оригинальные (5 шт)', 'Нежнейшее куриное филе в мягкой панировке из 11 трав', 290.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Шефбургер Де Люкс', 'Филе цыпленка, бекон, сыр, помидоры, салат айсберг на булочке', 270.00, 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Твистер Острый', 'Острые стрипсы, томаты, салат и соус, завернутые в пшеничную тортилью', 230.00, 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Боксмастер с беконом', 'Куриное филе, картофельный оладушек, сыр, бекон и помидоры', 310.00, 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Картофель фри стандарт', 'Хрустящий золотистый картофель с солью', 130.00, 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Байтсы куриные терияки', 'Небольшие кусочки курицы в сладковатом соусе терияки', 190.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Пирожок с яблоком', 'Горячий слоеный пирожок с яблочно-коричной начинкой', 95.00, 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400', (SELECT id FROM restaurants WHERE name = 'KFC')),
+              ('Газировка 0.5л', 'Освежающий газированный напиток', 110.00, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400', (SELECT id FROM restaurants WHERE name = 'KFC'));
+
+              -- Coffee Boom (71-80)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Стейк Рибай с овощами гриль', 'Сочный стейк из мраморной говядины с цукини и болгарским перцем', 890.00, 'https://images.unsplash.com/photo-1558030006-450675393462?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Паста Карбонара', 'Спагетти с хрустящим беконом, желтком, пармезаном и черным перцем', 410.00, 'https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Лосось на гриле со шпинатом', 'Стейк из лосося в сливочно-икорном соусе', 780.00, 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Крем-суп из шампиньонов', 'Нежный грибной суп со сливками и хрустящими сухариками', 290.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Салат Цезарь с креветками', 'Салат романо, тигровые креветки, томаты черри, пармезан и соус', 460.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Брускетты с томатами и страчателлой', 'Хрустящая чиабатта, нежный сыр и вяленые томаты', 350.00, 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Медовик домашний', 'Тонкие медовые коржи с нежным сметанным кремом', 240.00, 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Фисташковый рулет с малиной', 'Воздушное безе с фисташковой пастой и свежей ягодой', 310.00, 'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Латте Карамельный', 'Мягкий кофе с молоком и соленой карамелью', 210.00, 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Смузи Манго-Маракуйя', 'Густой тропический витаминный коктейль', 250.00, 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom'));
+
+              -- Wok & Roll (81-90)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Удон с курицей Терияки', 'Пшеничная лапша, обжаренная с филе цыпленка, овощами и кунжутом', 340.00, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Соба с говядиной в устричном соусе', 'Гречневая лапша, мраморная говядина, болгарский перец, грибы шиитаке', 390.00, 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Тяхан с морепродуктами', 'Жареный рис с креветками, кальмарами, яйцом и зеленым луком', 420.00, 'https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Суп Том Ям с креветками', 'Остро-кислый тайский суп на кокосовом молоке с лемонграссом и рисом', 460.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Суп Фо Бо с говядиной', 'Вьетнамский наваристый суп с рисовой лапшой, говядиной и зеленью', 380.00, 'https://images.unsplash.com/photo-1585032226651-759b368d7246?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Поке с лососем и бобами эдамаме', 'Рис, свежий лосось, авокадо, огурец, чука и соус понзу', 470.00, 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Спринг-роллы с креветками (4 шт)', 'Хрустящие блинчики из рисовой бумаги со сладким соусом чили', 260.00, 'https://images.unsplash.com/photo-1563245372-f21724e3856d?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Курица Гунбао с арахисом', 'Острая сычуаньская классика с перцем чили и рисом', 360.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Жареные бананы в карамели', 'Хрустящий традиционный азиатский десерт', 190.00, 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll')),
+              ('Чай зеленый с жасмином', 'Листовой китайский зеленый чай', 140.00, 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=400', (SELECT id FROM restaurants WHERE name = 'Wok & Roll'));
+
+              -- Трактир На Мельнице (91-100)
+              INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
+              ('Борщ украинский с пампушками', 'Наваристый суп с говядиной, свеклой, чесночными булочками и салом', 320.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Вареники с картофелем и шкварками', 'Домашние вареники с жареным луком и сметаной', 250.00, 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Пельмени сибирские со сметаной', 'Ручная лепка, фарш из говядины и свинины', 290.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Котлета по-киевски с пюре', 'Куриное филе с начинкой из сливочного масла и зелени в сухарях', 380.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Бефстроганов с картофельным пюре', 'Полоски нежной говядины в сливочно-грибном соусе', 490.00, 'https://images.unsplash.com/photo-1544025162-d76694265947?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Драники картофельные со сметаной', 'Хрустящие оладьи из тертого картофеля', 220.00, 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Сельдь под шубой', 'Традиционный слоеный салат с малосольной сельдью и овощами', 240.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Соленья из погребка', 'Бочковые огурцы, квашеная капуста, маринованные томаты и грибы', 260.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Блины со сгущенкой и ягодами', 'Тонкие домашние блинчики на молоке (3 шт)', 180.00, 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице')),
+              ('Квас хлебный разливной 0.5л', 'Натуральный квас живого брожения', 90.00, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400', (SELECT id FROM restaurants WHERE name = 'Трактир На Мельнице'));
