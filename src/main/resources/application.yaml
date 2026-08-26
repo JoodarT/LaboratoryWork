@@ -3,7 +3,7 @@ spring:
     name: EduFood
 
   datasource:
-    url: jdbc:h2:mem:edufood_db;AUTO_SERVER=TRUE;MODE=PostgreSQL
+    url: jdbc:h2:file:./db/edufood_db;AUTO_SERVER=TRUE;MODE=PostgreSQL
     driver-class-name: org.h2.Driver
     username: sa
     password:
