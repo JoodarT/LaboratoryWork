@@ -39,7 +39,7 @@
                     </a>
                 </li>
 
-                <#-- Блок профиля/входа. Реальная логика Spring Security появится в задаче Dev2 (#7) -->
+                <#-- Блок профиля/входа. Заглушка -->
                 <li class="nav-item dropdown">
                     <#if user??>
                         <a class="nav-link dropdown-toggle" href="#" id="userMenu" role="button"
@@ -70,7 +70,7 @@
 
 <footer class="footer py-3 bg-light border-top text-center text-muted">
     <div class="container">
-        &copy; 2026 EduFood — учебный проект
+        &copy; 2026 EduFood
     </div>
 </footer>
 
