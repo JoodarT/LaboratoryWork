@@ -7,6 +7,7 @@
         </h1>
         <#if (cart.items?size > 0)>
             <form action="/cart/clear" method="post" onsubmit="return confirm('Вы действительно хотите очистить корзину?');">
+                <@main.csrf/>
                 <button type="submit" class="btn btn-outline-danger btn-sm">
                     <i class="bi bi-trash3 me-1"></i> Очистить корзину
                 </button>
@@ -78,6 +79,7 @@
 
                                     <td class="text-center">
                                         <form action="/cart/update" method="post" class="d-flex justify-content-center align-items-center">
+                                            <@main.csrf/>
                                             <input type="hidden" name="dishId" value="${item.dishId}">
                                             <div class="input-group input-group-sm" style="max-width: 120px;">
                                                 <input type="number" name="quantity" value="${item.quantity}"
@@ -95,6 +97,7 @@
 
                                     <td class="text-center pe-4">
                                         <form action="/cart/remove" method="post">
+                                            <@main.csrf/>
                                             <input type="hidden" name="dishId" value="${item.dishId}">
                                             <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle p-2" title="Удалить позицию">
                                                 <i class="bi bi-trash3"></i>
@@ -137,6 +140,7 @@
                     </div>
 
                     <form action="/orders/checkout" method="post">
+                        <@main.csrf/>
                         <button type="submit" class="btn btn-warning w-100 py-3 fw-bold fs-6 shadow-sm">
                             <i class="bi bi-bag-check-fill me-2"></i> Оформить заказ
                         </button>
