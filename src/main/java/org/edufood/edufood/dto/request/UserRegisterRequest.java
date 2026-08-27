@@ -26,4 +26,7 @@ public class UserRegisterRequest {
     @Size(min = 6, max = 50, message = "Пароль должен содержать от 6 до 50 символов")
     private String password;
 
+    @NotBlank(message = "Повторите пароль")
+    private String confirmPassword;
+
 }
