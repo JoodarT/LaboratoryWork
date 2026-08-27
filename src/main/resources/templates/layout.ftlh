@@ -1,3 +1,5 @@
+<#import "/spring.ftl" as spring>
+
 <#macro layout title="EduFood — Доставка еды">
     <!DOCTYPE html>
     <html lang="ru" class="h-100">
@@ -56,16 +58,31 @@
                         </#if>
                     </a>
 
+                    <#-- Блок профиля/входа: зависит от состояния аутентификации (Spring Security) -->
                     <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown">
-                            <i class="bi bi-person-circle"></i> Профиль
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end shadow">
-                            <li><a class="dropdown-item" href="/profile/orders"><i class="bi bi-clock-history me-2"></i>Мои заказы</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-primary" href="/auth/login"><i class="bi bi-box-arrow-in-right me-2"></i>Войти</a></li>
-                            <li><a class="dropdown-item text-success" href="/auth/register"><i class="bi bi-person-plus me-2"></i>Регистрация</a></li>
-                        </ul>
+                        <#if currentUsername??>
+                            <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i> ${currentUsername}
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item" href="/profile/orders"><i class="bi bi-clock-history me-2"></i>Мои заказы</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form action="/logout" method="post" class="px-1">
+                                        <#if _csrf??><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"></#if>
+                                        <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Выйти</button>
+                                    </form>
+                                </li>
+                            </ul>
+                        <#else>
+                            <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown">
+                                <i class="bi bi-person-circle"></i> Профиль
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end shadow">
+                                <li><a class="dropdown-item text-primary" href="/auth/login"><i class="bi bi-box-arrow-in-right me-2"></i>Войти</a></li>
+                                <li><a class="dropdown-item text-success" href="/auth/register"><i class="bi bi-person-plus me-2"></i>Регистрация</a></li>
+                            </ul>
+                        </#if>
                     </div>
                 </div>
             </div>
