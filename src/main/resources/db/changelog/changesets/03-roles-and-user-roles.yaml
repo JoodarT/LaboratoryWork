@@ -1,0 +1,79 @@
+databaseChangeLog:
+  - changeSet:
+      id: 6-create-table-roles
+      author: dev-team
+      changes:
+        - createTable:
+            tableName: roles
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+
+  - changeSet:
+      id: 7-create-table-user-roles
+      author: dev-team
+      changes:
+        - createTable:
+            tableName: user_roles
+            columns:
+              - column:
+                  name: user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_roles_user
+                    references: users(id)
+                    deleteCascade: true
+              - column:
+                  name: role_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_user_roles_role
+                    references: roles(id)
+                    deleteCascade: true
+        - addPrimaryKey:
+            tableName: user_roles
+            columnNames: user_id, role_id
+            constraintName: pk_user_roles
+
+  - changeSet:
+      id: 8-seed-roles
+      author: dev-team
+      changes:
+        - sql:
+            comment: Базовые роли приложения
+            sql: |
+              INSERT INTO roles (name) VALUES ('ROLE_USER'), ('ROLE_ADMIN');
+
+  - changeSet:
+      id: 9-link-seed-user-to-role
+      author: dev-team
+      changes:
+        - sql:
+            comment: Привязка тестового пользователя к роли ROLE_USER
+            sql: |
+              INSERT INTO user_roles (user_id, role_id)
+              VALUES (
+                (SELECT id FROM users WHERE email = 'user@edufood.com'),
+                (SELECT id FROM roles WHERE name = 'ROLE_USER')
+              );
+
+  - changeSet:
+      id: 10-drop-users-role-column
+      author: dev-team
+      changes:
+        - dropColumn:
+            tableName: users
+            columnName: role
