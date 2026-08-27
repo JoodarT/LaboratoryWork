@@ -1,5 +1,8 @@
 <#import "/spring.ftl" as spring>
 
+<#-- Скрытое поле с CSRF-токеном для всех POST-форм приложения -->
+<#macro csrf><#if _csrf??><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"></#if></#macro>
+
 <#macro layout title="EduFood — Доставка еды">
     <!DOCTYPE html>
     <html lang="ru" class="h-100">
@@ -60,16 +63,16 @@
 
                     <#-- Блок профиля/входа: зависит от состояния аутентификации (Spring Security) -->
                     <div class="dropdown">
-                        <#if currentUsername??>
+                        <#if currentUser??>
                             <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-person-circle"></i> ${currentUsername}
+                                <i class="bi bi-person-circle"></i> ${currentUser.fullName}
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end shadow">
                                 <li><a class="dropdown-item" href="/profile/orders"><i class="bi bi-clock-history me-2"></i>Мои заказы</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form action="/logout" method="post" class="px-1">
-                                        <#if _csrf??><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"></#if>
+                                        <@csrf/>
                                         <button type="submit" class="dropdown-item text-danger"><i class="bi bi-box-arrow-right me-2"></i>Выйти</button>
                                     </form>
                                 </li>
