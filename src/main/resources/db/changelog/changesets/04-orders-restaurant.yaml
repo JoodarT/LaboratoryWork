@@ -1,0 +1,15 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11-add-orders-restaurant
+      author: dev-team
+      changes:
+        - addColumn:
+            tableName: orders
+            columns:
+              - column:
+                  name: restaurant_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_orders_restaurant
+                    references: restaurants(id)

@@ -15,6 +15,12 @@
         </#if>
     </div>
 
+    <#if cartError??>
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> ${cartError}
+        </div>
+    </#if>
+
     <#if !cart.items?has_content || cart.items?size == 0>
         <div class="card border-0 shadow-sm rounded-4 p-5 text-center my-4 bg-white">
             <div class="my-3">

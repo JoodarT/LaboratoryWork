@@ -5,3 +5,5 @@ databaseChangeLog:
       file: db/changelog/changesets/02-seed-data.yaml
   - include:
       file: db/changelog/changesets/03-roles-and-user-roles.yaml
+  - include:
+      file: db/changelog/changesets/04-orders-restaurant.yaml
