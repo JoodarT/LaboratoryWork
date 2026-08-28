@@ -22,6 +22,7 @@ spring:
   liquibase:
     change-log: classpath:db/changelog/master.yml
     enabled: true
+    drop-first: true
 
   freemarker:
     template-loader-path: classpath:/templates/
