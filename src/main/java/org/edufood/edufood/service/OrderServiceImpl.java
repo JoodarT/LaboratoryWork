@@ -15,8 +15,10 @@ import org.edufood.edufood.repository.OrderRepository;
 import org.edufood.edufood.repository.UserRepository;
 import org.edufood.edufood.service.service_interface.CookieService;
 import org.edufood.edufood.service.service_interface.OrderService;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+    private static final int MAX_QUANTITY_PER_ITEM = 50;
+
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
     private final DishRepository dishRepository;
@@ -33,53 +37,67 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public Order createOrderFromCart(HttpServletRequest request, HttpServletResponse response, String userEmail) {
+    public Order checkout(String userEmail, HttpServletRequest request, HttpServletResponse response) {
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new IllegalStateException("Пользователь не найден: " + userEmail));
+
         CartDto cart = cookieService.getCart(request);
         if (cart.getItems() == null || cart.getItems().isEmpty()) {
-            throw new IllegalStateException("Невозможно оформить заказ: корзина пуста");
+            throw new IllegalStateException("Корзина пуста — оформить заказ нельзя");
         }
 
-        User user = userRepository.findByEmail(userEmail.trim().toLowerCase())
-                .orElseThrow(() -> new IllegalArgumentException("Пользователь с email " + userEmail + " не найден"));
+        Order order = new Order();
+        order.setUser(user);
 
-        Order order = Order.builder()
-                .user(user)
-                .totalPrice(BigDecimal.ZERO)
-                .build();
-
-        BigDecimal calculatedTotal = BigDecimal.ZERO;
+        BigDecimal total = BigDecimal.ZERO;
 
         for (CartItemDto cartItem : cart.getItems()) {
             Dish dish = dishRepository.findById(cartItem.getDishId())
-                    .orElseThrow(() -> new IllegalArgumentException("Блюдо с ID " + cartItem.getDishId() + " не найдено"));
+                    .orElseThrow(() -> new IllegalStateException(
+                            "Блюдо больше не доступно (ID " + cartItem.getDishId() + ")"));
 
-            OrderItem orderItem = OrderItem.builder()
-                    .dish(dish)
-                    .quantity(cartItem.getQuantity())
-                    .priceAtOrder(dish.getPrice())
-                    .build();
+            if (order.getRestaurant() == null) {
+                order.setRestaurant(dish.getRestaurant());
+            } else if (!order.getRestaurant().getId().equals(dish.getRestaurant().getId())) {
+                throw new IllegalStateException("Корзина содержит блюда из разных ресторанов");
+            }
 
+            int quantity = Math.min(Math.max(cartItem.getQuantity() == null ? 0 : cartItem.getQuantity(), 1),
+                    MAX_QUANTITY_PER_ITEM);
+
+            BigDecimal priceAtOrder = dish.getPrice();
+
+            OrderItem orderItem = new OrderItem();
+            orderItem.setDish(dish);
+            orderItem.setQuantity(quantity);
+            orderItem.setPriceAtOrder(priceAtOrder);
             order.addItem(orderItem);
 
-            BigDecimal itemTotal = dish.getPrice().multiply(BigDecimal.valueOf(cartItem.getQuantity()));
-            calculatedTotal = calculatedTotal.add(itemTotal);
+            total = total.add(priceAtOrder.multiply(BigDecimal.valueOf(quantity)));
         }
 
-        order.setTotalPrice(calculatedTotal);
-        Order savedOrder = orderRepository.save(order);
+        order.setTotalPrice(total);
 
+        Order saved = orderRepository.save(order);
         cookieService.clearCartCookie(response);
 
-        log.info("Заказ #{} успешно оформлен пользователем {} на сумму {} сом",
-                savedOrder.getId(), user.getEmail(), savedOrder.getTotalPrice());
+        log.info("Пользователь {} оформил заказ #{} (ресторан «{}», позиций: {}, сумма: {})",
+                userEmail, saved.getId(), saved.getRestaurant().getName(),
+                saved.getItems().size(), total);
 
-        return savedOrder;
+        return saved;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Order getForUser(Long orderId, String userEmail) {
+        return orderRepository.findByIdAndUserEmail(orderId, userEmail)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Заказ не найден"));
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<Order> getUserOrders(String userEmail) {
-        log.info("Запрос истории заказов для пользователя: {}", userEmail);
-        return orderRepository.findAllByUserEmailWithItems(userEmail.trim().toLowerCase());
+        return orderRepository.findByUserEmailOrderByCreatedAtDesc(userEmail);
     }
 }
