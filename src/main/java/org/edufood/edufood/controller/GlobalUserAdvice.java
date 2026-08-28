@@ -8,11 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
-/**
- * Прокидывает во все шаблоны данные о текущем аутентифицированном пользователе
- * для блока профиля/входа в layout.ftlh (обработка Spring Security).
- * Для гостя возвращает null — в навбаре показываются ссылки «Войти / Регистрация».
- */
 @ControllerAdvice
 @RequiredArgsConstructor
 public class GlobalUserAdvice {

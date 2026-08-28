@@ -45,7 +45,7 @@ public class RestaurantController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             Model model
     ) {
-        int pageSize = 10; // По ТЗ: меню порциями по 10 блюд
+        int pageSize = 10;
         Restaurant restaurant = restaurantService.getRestaurantById(id);
         Page<Dish> dishPage = restaurantService.getDishesByRestaurant(id, page, pageSize);
 

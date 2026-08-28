@@ -56,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
             OrderItem orderItem = OrderItem.builder()
                     .dish(dish)
                     .quantity(cartItem.getQuantity())
-                    .priceAtOrder(dish.getPrice()) // Фиксируем актуальную цену из базы данных
+                    .priceAtOrder(dish.getPrice())
                     .build();
 
             order.addItem(orderItem);

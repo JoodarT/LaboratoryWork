@@ -25,9 +25,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // Защищённые разделы: оформление заказа и личный кабинет
                         .requestMatchers("/orders/**", "/profile/**").authenticated()
-                        // Публичный доступ: каталог, меню, корзина, регистрация/вход, статика, H2
                         .anyRequest().permitAll()
                 )
                 .formLogin(form -> form
@@ -44,9 +42,7 @@ public class SecurityConfig {
                         .logoutSuccessUrl("/auth/login?logout")
                         .permitAll()
                 )
-                // CSRF включён; исключаем только консоль H2 (dev-инструмент)
                 .csrf(csrf -> csrf.ignoringRequestMatchers("/h2-console/**"))
-                // Разрешаем фреймы того же источника для консоли H2
                 .headers(headers -> headers.frameOptions(frame -> frame.sameOrigin()));
 
         return http.build();

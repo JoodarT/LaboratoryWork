@@ -19,7 +19,6 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Имя роли в формате Spring Security, например ROLE_USER. */
     @Column(nullable = false, unique = true, length = 50)
     private String name;
 

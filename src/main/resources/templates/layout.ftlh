@@ -1,6 +1,5 @@
 <#import "/spring.ftl" as spring>
 
-<#-- Скрытое поле с CSRF-токеном для всех POST-форм приложения -->
 <#macro csrf><#if _csrf??><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"></#if></#macro>
 
 <#macro layout title="EduFood — Доставка еды">
@@ -10,7 +9,6 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>${title}</title>
-        <!-- Bootstrap 5 CSS & Icons -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
         <style>
@@ -27,7 +25,6 @@
     </head>
     <body class="d-flex flex-column h-100 bg-light">
 
-    <!-- Навигационная панель -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
         <div class="container">
             <a class="navbar-brand fw-bold text-warning d-flex align-items-center gap-2" href="/restaurants">
@@ -39,7 +36,6 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Поиск заведений -->
                 <form class="d-flex mx-auto my-2 my-lg-0 col-12 col-lg-5" action="/restaurants" method="get">
                     <div class="input-group">
                         <input class="form-control" type="search" name="search" placeholder="Поиск ресторанов..."
@@ -50,7 +46,6 @@
                     </div>
                 </form>
 
-                <!-- Меню профиля и корзины -->
                 <div class="d-flex align-items-center gap-3">
                     <a href="/cart" class="btn btn-outline-light position-relative">
                         <i class="bi bi-cart3 fs-5"></i>
@@ -61,7 +56,6 @@
                         </#if>
                     </a>
 
-                    <#-- Блок профиля/входа: зависит от состояния аутентификации (Spring Security) -->
                     <div class="dropdown">
                         <#if currentUser??>
                             <button class="btn btn-secondary dropdown-toggle d-flex align-items-center gap-1" type="button" data-bs-toggle="dropdown">
@@ -92,21 +86,18 @@
         </div>
     </nav>
 
-    <!-- Основной контент -->
     <main class="flex-shrink-0 my-4">
         <div class="container">
             <#nested/>
         </div>
     </main>
 
-    <!-- Футер -->
     <footer class="footer mt-auto py-3 bg-white border-top text-center text-muted">
         <div class="container">
             <small>© 2026 EduFood. Сервис заказа и быстрой доставки еды.</small>
         </div>
     </footer>
 
-    <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     </body>
     </html>
