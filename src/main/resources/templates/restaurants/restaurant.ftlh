@@ -49,6 +49,7 @@
                             <p class="card-text text-muted small flex-grow-1">${(d.description)!''}</p>
 
                             <form action="/cart/add" method="post" class="mt-3">
+                                <@main.csrf/>
                                 <input type="hidden" name="dishId" value="${d.id}">
                                 <div class="input-group">
                                     <input type="number" name="quantity" class="form-control text-center" value="1" min="1" max="50">

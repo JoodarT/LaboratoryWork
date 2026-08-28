@@ -1,4 +1,4 @@
-<#import "/layout.ftlh" as main>
+<#import "../layout.ftlh" as main>
 
 <@main.layout title="EduFood — Корзина">
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -7,12 +7,19 @@
         </h1>
         <#if (cart.items?size > 0)>
             <form action="/cart/clear" method="post" onsubmit="return confirm('Вы действительно хотите очистить корзину?');">
+                <@main.csrf/>
                 <button type="submit" class="btn btn-outline-danger btn-sm">
                     <i class="bi bi-trash3 me-1"></i> Очистить корзину
                 </button>
             </form>
         </#if>
     </div>
+
+    <#if cartError??>
+        <div class="alert alert-danger d-flex align-items-center" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i> ${cartError}
+        </div>
+    </#if>
 
     <#if !cart.items?has_content || cart.items?size == 0>
         <div class="card border-0 shadow-sm rounded-4 p-5 text-center my-4 bg-white">
@@ -78,6 +85,7 @@
 
                                     <td class="text-center">
                                         <form action="/cart/update" method="post" class="d-flex justify-content-center align-items-center">
+                                            <@main.csrf/>
                                             <input type="hidden" name="dishId" value="${item.dishId}">
                                             <div class="input-group input-group-sm" style="max-width: 120px;">
                                                 <input type="number" name="quantity" value="${item.quantity}"
@@ -95,6 +103,7 @@
 
                                     <td class="text-center pe-4">
                                         <form action="/cart/remove" method="post">
+                                            <@main.csrf/>
                                             <input type="hidden" name="dishId" value="${item.dishId}">
                                             <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle p-2" title="Удалить позицию">
                                                 <i class="bi bi-trash3"></i>
@@ -137,6 +146,7 @@
                     </div>
 
                     <form action="/orders/checkout" method="post">
+                        <@main.csrf/>
                         <button type="submit" class="btn btn-warning w-100 py-3 fw-bold fs-6 shadow-sm">
                             <i class="bi bi-bag-check-fill me-2"></i> Оформить заказ
                         </button>

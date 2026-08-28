@@ -4,10 +4,10 @@ databaseChangeLog:
       author: Bolot Azatov
       changes:
         - sql:
-            comment: Добавление тестового пользователя (пароль password123)
+            comment: Добавление тестового пользователя (пароль qwerty)
             sql: |
               INSERT INTO users (email, password, full_name, role, created_at)
-              VALUES ('user@edufood.com', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'Тестовый Пользователь', 'USER', CURRENT_TIMESTAMP);
+              VALUES ('user@edufood.com', '$2a$12$zg7Yb3T7ZDi0F3ml1rOKce5V4j4Fcvov.sCrg/U1z5jMURRGAbKH.', 'Тестовый Пользователь', 'USER', CURRENT_TIMESTAMP);
 
   - changeSet:
       id: seed-restaurants
