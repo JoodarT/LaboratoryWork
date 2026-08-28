@@ -42,9 +42,9 @@ databaseChangeLog:
               ('Пицца Четыре сыра', 'Сыр блю чиз, смесь сыров чеддер и пармезан, моцарелла', 545.00, 'https://images.unsplash.com/photo-1573821663912-569905455b1c?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
               ('Пицца Мясная', 'Цыпленок, ветчина, пикантная пепперони, чоризо и моцарелла', 595.00, 'https://images.unsplash.com/photo-1541745537411-b8046dc6d66c?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
               ('Додстер Классический', 'Горячая закуска с цыпленком, томатами, моцареллой и соусом ранч', 195.00, 'https://images.unsplash.com/photo-1626700051175-6818013e1d4f?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
-              ('Сырные палочки', 'Хрустящие сырные палочки из нежного теста с чесночным соусом', 245.00, 'https://images.unsplash.com/photo-1548340748-6d2b7d7da410?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Сырные палочки', 'Хрустящие сырные палочки из нежного теста с чесночным соусом', 245.00, 'https://korova55.ru/wp-content/uploads/2025/03/syrnye-palochki.jpg', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
               ('Куриные кусочки запеченные', 'Нежные кусочки куриного филе в хрустящей панировке', 265.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
-              ('Паста Цыпленок и грибы', 'Паста фетучини с запеченным филе, шампиньонами и сливочным соусом', 345.00, 'https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
+              ('Паста Цыпленок и грибы', 'Паста фетучини с запеченным филе, шампиньонами и сливочным соусом', 345.00, 'https://www.russianfood.com/dycontent/images_upl/572/big_571403.jpg', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
               ('Маффин Три шоколада', 'Шоколадный кекс с начинкой из темного, молочного и белого шоколада', 145.00, 'https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца')),
               ('Морс Клюквенный 0.5л', 'Натуральный домашний морс из дикорастущей клюквы', 120.00, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400', (SELECT id FROM restaurants WHERE name = 'Додо Пицца'));
 
@@ -83,7 +83,7 @@ databaseChangeLog:
               ('Картофель фри с сырным соусом', 'Золотистые брусочки картофеля с морской солью', 150.00, 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
               ('Картофель по-деревенски', 'Запеченные дольки картофеля с паприкой и розмарином', 160.00, 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
               ('Наггетсы куриные (8 шт)', 'Куриное филе в хрустящей золотистой панировке', 220.00, 'https://images.unsplash.com/photo-1562967914-608f82629710?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
-              ('Луковые кольца', 'Кольца репчатого лука в пивном кляре', 180.00, 'https://images.unsplash.com/photo-1639024471285-0afc3855f488?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
+              ('Луковые кольца', 'Кольца репчатого лука в пивном кляре', 180.00, 'https://cdn.lifehacker.ru/wp-content/uploads/2025/01/107_1737487267.jpg', (SELECT id FROM restaurants WHERE name = 'Burger House')),
               ('Милкшейк Клубничный', 'Густой молочный коктейль со свежей клубникой и мороженым', 210.00, 'https://images.unsplash.com/photo-1579954115545-a95591f28bfc?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House')),
               ('Лимонад Цитрусовый 0.5л', 'Освежающий лимонад с апельсином, лимоном и мятой', 160.00, 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=400', (SELECT id FROM restaurants WHERE name = 'Burger House'));
 
@@ -129,7 +129,7 @@ databaseChangeLog:
               -- Coffee Boom (71-80)
               INSERT INTO dishes (name, description, price, image_url, restaurant_id) VALUES
               ('Стейк Рибай с овощами гриль', 'Сочный стейк из мраморной говядины с цукини и болгарским перцем', 890.00, 'https://images.unsplash.com/photo-1558030006-450675393462?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
-              ('Паста Карбонара', 'Спагетти с хрустящим беконом, желтком, пармезаном и черным перцем', 410.00, 'https://images.unsplash.com/photo-1621996346565-e3d5d6281691?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
+              ('Паста Карбонара', 'Спагетти с хрустящим беконом, желтком, пармезаном и черным перцем', 410.00, 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRVY1tKIgz0iLz4d28z2hea8W5CZwNMTBkBty_W8AELbQ&s=10', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
               ('Лосось на гриле со шпинатом', 'Стейк из лосося в сливочно-икорном соусе', 780.00, 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
               ('Крем-суп из шампиньонов', 'Нежный грибной суп со сливками и хрустящими сухариками', 290.00, 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
               ('Салат Цезарь с креветками', 'Салат романо, тигровые креветки, томаты черри, пармезан и соус', 460.00, 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=400', (SELECT id FROM restaurants WHERE name = 'Coffee Boom')),
